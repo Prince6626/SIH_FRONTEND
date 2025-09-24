@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../config/axios';
 import { useNavigate } from 'react-router-dom';
 
 const bloodGroups = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
@@ -38,7 +39,7 @@ const StudentProfile = () => {
     try {
       setLoading(true);
       setError('');
-      const res = await axios.get('http://localhost:5000/api/users/me', { headers: authHeaders() });
+      const res = await api.get('/users/me', { headers: authHeaders() });
       if (res.data.success) {
         setProfile(res.data.data);
         const p = res.data.data;
@@ -90,7 +91,7 @@ const StudentProfile = () => {
         dateOfBirth: form.dateOfBirth,
         profilePhoto: form.profilePhoto || undefined
       };
-      const res = await axios.put('http://localhost:5000/api/users/me', payload, { headers: authHeaders() });
+      const res = await api.put('/users/me', payload, { headers: authHeaders() });
       if (res.data.success) {
         setProfile(res.data.data);
         // update local storage user for username display

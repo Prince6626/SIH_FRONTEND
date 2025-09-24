@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import api from '../config/axios';
 
 const ReportIssuePage = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +87,7 @@ const ReportIssuePage = () => {
         submitData.append('image', imageFile);
       }
 
-      const response = await axios.post('http://localhost:5000/api/reports', submitData, {
+      const response = await api.post('/reports', submitData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

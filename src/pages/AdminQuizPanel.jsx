@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import api from '../config/axios';
 import { useNavigate } from 'react-router-dom';
 
 const AdminQuizPanel = () => {
@@ -49,7 +50,7 @@ const AdminQuizPanel = () => {
 
     const loadModules = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/modules?limit=100');
+        const res = await api.get('/modules?limit=100');
         if (res.data.success) {
           setModules(res.data.data.modules);
         }
@@ -68,7 +69,7 @@ const AdminQuizPanel = () => {
   const loadQuiz = async (moduleId) => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/modules/${moduleId}/quiz/admin`, {
+      const res = await api.get(`/modules/${moduleId}/quiz/admin`, {
         headers: authHeaders()
       });
       if (res.data.success) {
@@ -95,7 +96,7 @@ const AdminQuizPanel = () => {
     try {
       if (!selectedModuleId) return;
       const payload = { ...form };
-      const res = await axios.post(`http://localhost:5000/api/modules/${selectedModuleId}/quiz/questions`, payload, {
+      const res = await api.post(`/modules/${selectedModuleId}/quiz/questions`, payload, {
         headers: authHeaders()
       });
       if (res.data.success) {
@@ -267,11 +268,11 @@ const AdminQuizPanel = () => {
               onClick={async()=>{
                 try{
                   const payload={...moduleForm,tags:moduleForm.tags?moduleForm.tags.split(',').map(t=>t.trim()).filter(Boolean):[]};
-                  const res=await axios.post('http://localhost:5000/api/modules',payload,{headers:authHeaders()});
+                  const res=await api.post('/modules',payload,{headers:authHeaders()});
                   if(res.data.success){
                     alert('Module created');
                     setModuleForm({title:'',description:'',difficulty:'beginner',duration:'1 week',estimatedHours:2,category:'Disaster',tags:'',thumbnail:'',introVideoUrl:'',isPublished:true,isActive:true,notes:''});
-                    const reload=await axios.get('http://localhost:5000/api/modules?limit=100');
+                    const reload=await api.get('/modules?limit=100');
                     if(reload.data.success){setModules(reload.data.data.modules)}
                   }
                 }catch(e){
@@ -285,10 +286,10 @@ const AdminQuizPanel = () => {
               onClick={async()=>{
                 try{
                   const payload={...moduleForm,tags:moduleForm.tags?moduleForm.tags.split(',').map(t=>t.trim()).filter(Boolean):[]};
-                  const res=await axios.put(`http://localhost:5000/api/modules/${selectedModuleId}`,payload,{headers:authHeaders()});
+                  const res=await api.put(`/modules/${selectedModuleId}`,payload,{headers:authHeaders()});
                   if(res.data.success){
                     alert('Module updated');
-                    const reload=await axios.get('http://localhost:5000/api/modules?limit=100');
+                    const reload=await api.get('/modules?limit=100');
                     if(reload.data.success){setModules(reload.data.data.modules)}
                   }
                 }catch(e){

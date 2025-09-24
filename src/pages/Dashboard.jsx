@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from '../config/axios';
 
 const Dashboard = () => {
   const [modules, setModules] = useState([]);
@@ -49,7 +50,7 @@ const Dashboard = () => {
       setLoading(true);
       // Try to fetch from API first
       try {
-        const response = await axios.get("http://localhost:5000/api/modules");
+        const response = await api.get("/modules");
 
         if (response.data.success) {
           console.log("Modules data:", response.data.data.modules);

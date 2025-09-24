@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-// Configure axios with base URL
+// Configure axios with base URL from Vite env
+const apiBase = (import.meta?.env?.VITE_API_BASE_URL ? String(import.meta.env.VITE_API_BASE_URL) : 'http://localhost:5000').replace(/\/$/, '');
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
-  timeout: 10000,
+  baseURL: `${apiBase}/api`,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 // Request interceptor to add auth token

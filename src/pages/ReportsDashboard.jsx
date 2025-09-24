@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import api from '../config/axios';
 
 const ReportsDashboard = () => {
   const [reports, setReports] = useState([]);
@@ -53,7 +54,7 @@ const ReportsDashboard = () => {
         ...filters
       });
 
-      const response = await axios.get(`http://localhost:5000/api/reports?${params}`, {
+      const response = await api.get(`/reports?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -78,7 +79,7 @@ const ReportsDashboard = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/reports/stats/summary', {
+      const response = await api.get('/reports/stats/summary', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -96,7 +97,7 @@ const ReportsDashboard = () => {
     try {
       setResolvingId(reportId);
       const token = localStorage.getItem('token');
-      await axios.patch(`http://localhost:5000/api/reports/${reportId}/resolve`, { description: 'Resolved by teacher' }, {
+      await api.patch(`/reports/${reportId}/resolve`, { description: 'Resolved by teacher' }, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
